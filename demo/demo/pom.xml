@@ -12,7 +12,11 @@
 	<description>Demo project for Spring Boot</description>
 
 	<scm>
+	
+		<connection>scm:https://github.com/ksulima/currency-web-service.git</connection>
+		<url>https://github.com/ksulima/currency-web-service</url>
 		<developerConnection>scm:svn:https://github.com/ksulima/currency-web-service.git</developerConnection>
+		<tag>HEAD</tag>
 	</scm>
 
 	<distributionManagement>
