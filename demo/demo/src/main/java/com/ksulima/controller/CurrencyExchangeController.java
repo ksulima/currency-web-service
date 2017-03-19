@@ -1,6 +1,6 @@
 package com.ksulima.controller;
 
-import com.ksulima.service.CurrencyService;
+import com.ksulima.model.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.ksulima.service;
+package com.ksulima.model;
 
 /**
  * Created by Krzysztof Sulima on 15.03.2017.
@@ -6,5 +6,6 @@ package com.ksulima.service;
 public interface CurrencyService {
 
     String getCurrency();
+
 
 }

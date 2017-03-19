@@ -1,6 +1,6 @@
 package com.ksulima.service.impl;
 
-import com.ksulima.service.CurrencyService;
+import com.ksulima.model.CurrencyService;
 import org.springframework.stereotype.Service;
 
 /**
