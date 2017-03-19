@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class ExchangeClient {
 
-    private String url = "http://api.fixer.io/latest?symbols=USD,GBP&base=PLN";
+    private String url = "http://api.fixer.io/latest?symbols=USD,GBP,NOK&base=EUR";
 
     @Autowired
     private RestTemplate rest;

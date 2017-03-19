@@ -1,6 +1,8 @@
 package com.ksulima.controller;
 
 import com.ksulima.model.CurrencyService;
+import com.ksulima.model.ExchangeModel;
+import com.ksulima.rest.client.ExchangeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -75,6 +77,15 @@ public class CurrencyExchangeController {
       currencyServices.forEach((x)-> result.add(x.getCurrency()));
       response.setStatus(401);
       return result;
+    }
+
+
+    @Autowired
+    private ExchangeClient exchangeClient;
+
+    @RequestMapping("/currency/external")
+    public ExchangeModel getExchange(){
+        return exchangeClient.getExchange();
     }
 
 
