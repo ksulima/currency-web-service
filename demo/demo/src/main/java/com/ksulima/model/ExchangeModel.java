@@ -2,6 +2,9 @@ package com.ksulima.model;
 
 import lombok.Data;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Map;
 
 /**
@@ -11,19 +14,17 @@ import java.util.Map;
 @Data
 public class ExchangeModel {
 
-    //@SerializedName("base")
-    //@Expose
+   @SerializedName("base")
+    @Expose
     private String base;
 
-    //@SerializedName("data")
-    //@Expose
+    @SerializedName("data")
+    @Expose
     private String date;
 
-    //@SerializedName("rates")
-    //@Expose
+    @SerializedName("rates")
+    @Expose
     private Map<String, String> rates;
-
-
 
 
 }
