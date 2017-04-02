@@ -6,6 +6,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
+
 @SpringBootApplication
 public class DemoApplication {
 
@@ -15,10 +16,10 @@ public class DemoApplication {
 	}
 
 
-
 	@Bean
 	RestTemplate getRestTemplate(){
 		return new RestTemplateBuilder().build();
 	}
+
 
 }

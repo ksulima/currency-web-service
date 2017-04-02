@@ -1,4 +1,4 @@
-package com.ksulima.rest.controller;
+package com.ksulima.rest_controller;
 
 import com.ksulima.bussiness_logic_interface.model.CurrencyParams;
 import com.ksulima.bussiness_logic_interface.model.ExchangeModel;
@@ -89,10 +89,11 @@ public class CurrencyExchangeController {
         return exchangeClient.getExchange();
     }
 
-    @RequestMapping("/currency/fixer/{inCurrency}/{outCurrency}")
+    @RequestMapping("/currency/fixer/{inCurrency}/{outCurrency}/{date}")
     public ExchangeModel getExchange(@PathVariable String inCurrency,
-                                     @PathVariable String outCurrency){
-        return exchangeClient.getExchangeInOut(inCurrency, outCurrency);
+                                     @PathVariable String outCurrency,
+                                     @PathVariable String date){
+        return exchangeClient.getExchangeInOut(inCurrency, outCurrency, date);
     }
 
     @RequestMapping("/currency/fixer/multi/{inCurrency}/{outCurrencies}")
@@ -112,14 +113,22 @@ public class CurrencyExchangeController {
 
     @RequestMapping(value="/currency/fixer/inout/post", method = RequestMethod.POST)
     ResponseEntity<ExchangeModel> getExchangeInOut(@RequestBody CurrencyParams param){
-       return new ResponseEntity(exchangeClient.getExchangeInOut(param.getInCurrency(), param.getOutCurrency()), HttpStatus.OK);
+       return new ResponseEntity(exchangeClient.getExchangeInOut(param.getInCurrency(), param.getOutCurrency(), param.getDate()), HttpStatus.OK);
     }
 
-
-    public ExchangeModel calculateConversion(@PathVariable String inCurrency,
+    @RequestMapping("/currency/fixer/convert/{inCurrency}/{outCurrency}/{amount}/{date}")
+    public ResponseEntity<ExchangeModel> calculateConversion(@PathVariable String inCurrency,
                                              @PathVariable String outCurrency,
-                                             @PathVariable Integer amount){
+                                             @PathVariable Integer amount,
+                                             @PathVariable String date){
+        ExchangeModel fixerdata = exchangeClient.getExchangeInOut(inCurrency, outCurrency, date);
 
+        if(amount>0 && amount <=1000){
+            ExchangeModel result = currencyTotService.calculateConversion(fixerdata, amount);
+            return new ResponseEntity(result, HttpStatus.OK);
+        }else{
+            return new ResponseEntity(fixerdata, HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

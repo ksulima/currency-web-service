@@ -1,6 +1,6 @@
-package com.ksulima.rest.client;
+package com.ksulima.rest_client;
 
-import com.ksulima.model.ExchangeModel;
+import com.ksulima.bussiness_logic_interface.model.ExchangeModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -24,12 +24,12 @@ public class ExchangeClient {
         return rest.getForObject(url, ExchangeModel.class);
     }
 
-    public ExchangeModel getExchangeInOut(String inCurrency, String outCurrency){
-        return rest.getForObject(urlModif(inCurrency, outCurrency), ExchangeModel.class);
+    public ExchangeModel getExchangeInOut(String inCurrency, String outCurrency, String date){
+        return rest.getForObject(urlModif(inCurrency, outCurrency, date), ExchangeModel.class);
     }
 
-    private String urlModif(String inCurrency, String outCurrency){
-        return "http://api.fixer.io/latest?symbols="+outCurrency+"&base=" + inCurrency;
+    private String urlModif(String inCurrency, String outCurrency, String date){
+        return "http://api.fixer.io/"+date+"?symbols="+outCurrency+"&base=" + inCurrency;
     }
 
     public ExchangeModel getMultiExchangeInOut(String inCurrency, String outCurrencies){
@@ -47,4 +47,8 @@ public class ExchangeClient {
         url += "&base=" + inCurrency;
         return url;
     }
+
+
+
+
 }

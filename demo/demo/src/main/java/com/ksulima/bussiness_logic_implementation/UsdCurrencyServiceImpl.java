@@ -1,14 +1,13 @@
-package com.ksulima.service.impl;
+package com.ksulima.bussiness_logic_implementation;
 
-import com.ksulima.model.CurrencyService;
-import org.springframework.context.annotation.Primary;
+import com.ksulima.bussiness_logic_interface.service.CurrencyService;
 import org.springframework.stereotype.Service;
 
 /**
  * Created by Krzysztof Sulima on 15.03.2017.
  */
-@Primary
-@Service("usd")
+
+@Service
 public class UsdCurrencyServiceImpl implements CurrencyService {
 
     @Override
