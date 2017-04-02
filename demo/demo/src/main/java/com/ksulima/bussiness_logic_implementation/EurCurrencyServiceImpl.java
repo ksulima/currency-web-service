@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by Krzysztof Sulima on 15.03.2017.
  */
+
 @Service("eur")
 public class EurCurrencyServiceImpl implements CurrencyService {
 
