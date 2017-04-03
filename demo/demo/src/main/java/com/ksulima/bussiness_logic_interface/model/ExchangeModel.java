@@ -10,6 +10,8 @@ import java.util.Map;
  * Created by Krzysztof Sulima on 19.03.2017.
  */
 
+
+
 @Data
 public class ExchangeModel {
 
