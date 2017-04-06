@@ -1,1 +1,1 @@
-Web application based on Spring Boost, which provide client with currencies exchange rates.
+Web application based on Spring Boot, which provide client with currencies exchange rates.
