@@ -4,6 +4,8 @@ import com.ksulima.bussiness_logic_interface.model.CurrencyParams;
 import com.ksulima.bussiness_logic_interface.model.ExchangeModel;
 import com.ksulima.bussiness_logic_interface.service.CurrencyService;
 import com.ksulima.bussiness_logic_interface.service.CurrencyTotService;
+import com.ksulima.database.entity.MyCurrency;
+import com.ksulima.database.repository.CurrencyRepository;
 import com.ksulima.rest_client.ExchangeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,108 +27,124 @@ import java.util.List;
 @RequestMapping("/api")
 public class CurrencyExchangeController {
 
-    @RequestMapping("/{number}")
-    public Long multiplyByFive(@PathVariable Long number){
-        return number*5;
+    @RequestMapping("/currency/{number}")
+    public Long multiplyByFive(@PathVariable Long number) {
+        return number * 5;
     }
 
 
-    @RequestMapping("/multiplier/{value}/{exchangeRatio}")
+    @RequestMapping("/currency/multiply/{value}/{exchangeRatio}")
     public String currencyMultiplier(@RequestParam("currFrom") String currFrom,
                                      @RequestParam("currTo") String currTo,
                                      @PathVariable Long value,
-                                     @PathVariable Long exchangeRatio){
+                                     @PathVariable Long exchangeRatio) {
 
-        try{
+        try {
             Currency currencyFrom = Currency.getInstance(currFrom);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             throw new RuntimeException("invalid currency code");
         }
-        try{
+        try {
             Currency currencyTo = Currency.getInstance(currTo);
-        }catch(IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             throw new RuntimeException("invalid currency code");
         }
-        return value + " " + currFrom + " equals " + value*exchangeRatio + " " + currTo;
+        return value + " " + currFrom + " equals " + value * exchangeRatio + " " + currTo;
     }
-
 
 
     @Autowired
     private Collection<CurrencyService> currencyServices;
 
-    @RequestMapping("/currency")
-    public List<String> allCurrencies(){
+    @RequestMapping("/currency/all")
+    public List<String> allCurrencies() {
         List<String> result = new ArrayList<String>();
-        currencyServices.forEach((x)-> result.add(x.getCurrency()));
+        currencyServices.forEach((x) -> result.add(x.getCurrency()));
         return result;
     }
 
-    @RequestMapping("/currency/status")
-    public ResponseEntity<List<String>> allCurrencyStatus(){
+    @RequestMapping("/currency/all/status")
+    public ResponseEntity<List<String>> allCurrencyStatus() {
         List<String> result = new ArrayList<String>();
-        currencyServices.forEach((x)-> result.add(x.getCurrency()));
+        currencyServices.forEach((x) -> result.add(x.getCurrency()));
         return new ResponseEntity<List<String>>(result, HttpStatus.ALREADY_REPORTED);
     }
 
-    @RequestMapping("/currency/status/dec")
+    @RequestMapping("/currency/all/status/dec")
     public List<String> allCurrencyStatusDecorator(
             HttpServletRequest request,
             HttpServletResponse response
-    ){
-      List<String> result = new ArrayList<String>();
-      currencyServices.forEach((x)-> result.add(x.getCurrency()));
-      response.setStatus(401);
-      return result;
+    ) {
+        List<String> result = new ArrayList<String>();
+        currencyServices.forEach((x) -> result.add(x.getCurrency()));
+        response.setStatus(200);
+        return result;
     }
 
 
     @Autowired
     private ExchangeClient exchangeClient;
 
-    @RequestMapping("/currency/fixer")
-    public ExchangeModel getExchange(){
+    @RequestMapping("/get/latest")
+    public ExchangeModel getExchange() {
         return exchangeClient.getExchange();
     }
 
-    @RequestMapping("/currency/fixer/{inCurrency}/{outCurrency}/{date}")
+    @RequestMapping("/get/{inCurrency}/{outCurrency}/{date}")
     public ExchangeModel getExchange(@PathVariable String inCurrency,
                                      @PathVariable String outCurrency,
-                                     @PathVariable String date){
+                                     @PathVariable String date) {
         return exchangeClient.getExchangeInOut(inCurrency, outCurrency, date);
     }
 
-    @RequestMapping("/currency/fixer/multi/{inCurrency}/{outCurrencies}")
+
+
+
+    @Autowired
+    private CurrencyRepository currencyRepository;
+
+    @RequestMapping("/db/save/{inCurrency}/{outCurrency}/{date}")
+    public void saveCurrencyToDB(@PathVariable String inCurrency,
+                                @PathVariable String outCurrency,
+                                @PathVariable String date) {
+
+        ExchangeModel fixerdata = exchangeClient.getExchangeInOut(inCurrency, outCurrency, date);
+        MyCurrency myCurrency = new MyCurrency();
+        myCurrency.setDate(fixerdata.getDate());
+        myCurrency.setBase(fixerdata.getBase());
+        myCurrency.setWaluta(outCurrency);
+        myCurrency.setRate(fixerdata.getRates().get(outCurrency));
+        currencyRepository.save(myCurrency);
+    }
+
+
+
+    @RequestMapping("/multi/{inCurrency}/{outCurrencies}")
     public ExchangeModel getMultiExchange(@PathVariable String inCurrency,
-                                     @PathVariable String outCurrencies){
+                                          @PathVariable String outCurrencies) {
         return exchangeClient.getMultiExchangeInOut(inCurrency, outCurrencies);
     }
 
     @Autowired
     private CurrencyTotService currencyTotService;
 
-    @RequestMapping("/currency/select/{curr}")
-    public String getSelectedCurrency(@PathVariable String curr){
-        return currencyTotService.getSelectedCurrency(curr);
+
+    @RequestMapping(value = "/post", method = RequestMethod.POST)
+    ResponseEntity<ExchangeModel> getExchangeInOut(@RequestBody CurrencyParams param) {
+        return new ResponseEntity(exchangeClient.getExchangeInOut(param.getInCurrency(), param.getOutCurrency(), param.getDate()), HttpStatus.OK);
     }
 
-
-    @RequestMapping(value="/currency/fixer/inout/post", method = RequestMethod.POST)
-    ResponseEntity<ExchangeModel> getExchangeInOut(@RequestBody CurrencyParams param){
-       return new ResponseEntity(exchangeClient.getExchangeInOut(param.getInCurrency(), param.getOutCurrency(), param.getDate()), HttpStatus.OK);
-    }
-
-    @RequestMapping("/currency/fixer/convert/{inCurrency}/{outCurrency}/{amount}/{date}")
+    @RequestMapping("/convert/{inCurrency}/{outCurrency}/{amount}/{date}")
     public ResponseEntity<ExchangeModel> calculateConversion(@PathVariable String inCurrency,
-                                             @PathVariable String outCurrency,
-                                             @PathVariable Integer amount,
-                                             @PathVariable String date){
+                                                             @PathVariable String outCurrency,
+                                                             @PathVariable Integer amount,
+                                                             @PathVariable String date) {
         ExchangeModel fixerdata = exchangeClient.getExchangeInOut(inCurrency, outCurrency, date);
 
-        if(amount>0 && amount <=1000){
+        if (amount > 0 && amount <= 1000) {
             ExchangeModel result = currencyTotService.calculateConversion(fixerdata, amount);
             return new ResponseEntity(result, HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity(fixerdata, HttpStatus.BAD_REQUEST);
         }
     }

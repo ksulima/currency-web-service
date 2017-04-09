@@ -1,12 +1,18 @@
 package com.ksulima.database.repository;
 
-import com.ksulima.database.entity.Currency;
-import org.springframework.data.repository.CrudRepository;
+import com.ksulima.database.entity.MyCurrency;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by Krzysztof Sulima on 03.04.2017.
  */
-public interface CurrencyRepository extends CrudRepository<Currency, Long> {
 
+@Repository
+public interface CurrencyRepository extends JpaRepository<MyCurrency, Long> {
 
+    MyCurrency findById(Long id);
+
+    MyCurrency findFirst1ByOrderByIdDesc();
 }
+

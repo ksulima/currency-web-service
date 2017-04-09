@@ -37,7 +37,7 @@ public class ExchangeClient {
     }
 
     private String urlMultiModif(String inCurrency, String outCurrencies){
-        List<String> items = Arrays.asList(outCurrencies.split("-"));
+        List<String> items = Arrays.asList(outCurrencies.split(","));
         String url = "http://api.fixer.io/latest?symbols=";
         for(String item : items){
             url += item;

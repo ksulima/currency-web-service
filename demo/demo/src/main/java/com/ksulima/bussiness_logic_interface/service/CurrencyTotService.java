@@ -13,10 +13,6 @@ import java.util.Map;
 @Service
 public class CurrencyTotService {
 
-    public String getSelectedCurrency(String curr){
-        return "Your selected currency is: " + curr;
-    }
-
     public ExchangeModel calculateConversion(ExchangeModel fixerData, int amount){
         Map<String, String> rates = fixerData.getRates();
         for(String key: rates.keySet()){
