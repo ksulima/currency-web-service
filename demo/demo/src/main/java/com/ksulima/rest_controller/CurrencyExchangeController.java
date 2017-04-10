@@ -104,17 +104,22 @@ public class CurrencyExchangeController {
     private CurrencyRepository currencyRepository;
 
     @RequestMapping("/db/save/{inCurrency}/{outCurrency}/{date}")
-    public void saveCurrencyToDB(@PathVariable String inCurrency,
+    public String saveCurrencyToDB(@PathVariable String inCurrency,
                                 @PathVariable String outCurrency,
                                 @PathVariable String date) {
 
-        ExchangeModel fixerdata = exchangeClient.getExchangeInOut(inCurrency, outCurrency, date);
-        MyCurrency myCurrency = new MyCurrency();
-        myCurrency.setDate(fixerdata.getDate());
-        myCurrency.setBase(fixerdata.getBase());
-        myCurrency.setWaluta(outCurrency);
-        myCurrency.setRate(fixerdata.getRates().get(outCurrency));
-        currencyRepository.save(myCurrency);
+        List<MyCurrency> itemList = currencyRepository.findByDateAndBaseAndWaluta(date, inCurrency, outCurrency);
+        if(itemList.size() == 0){
+            ExchangeModel fixerdata = exchangeClient.getExchangeInOut(inCurrency, outCurrency, date);
+            MyCurrency myCurrency = new MyCurrency();
+            myCurrency.setDate(fixerdata.getDate());
+            myCurrency.setBase(fixerdata.getBase());
+            myCurrency.setWaluta(outCurrency);
+            myCurrency.setRate(fixerdata.getRates().get(outCurrency));
+            currencyRepository.save(myCurrency);
+            return "Added";
+        }
+        return "Not added";
     }
 
 
