@@ -16,7 +16,7 @@ public class ViewController {
     @RequestMapping("/")
     public String index(Model model){
         model.addAttribute("datetime", new Date());
-        model.addAttribute("username", "yourNickname");
+        model.addAttribute("username", "Public User");
         return "index";
     }
 
