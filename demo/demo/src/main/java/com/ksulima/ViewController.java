@@ -1,4 +1,4 @@
-package webapp;
+package com.ksulima;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,10 +10,11 @@ import java.util.Date;
  * Created by Krzysztof Sulima on 15.04.2017.
  */
 
+
 @Controller
 public class ViewController {
 
-    @RequestMapping("/")
+    @RequestMapping("/start")
     public String index(Model model){
         model.addAttribute("datetime", new Date());
         model.addAttribute("username", "Public User");
