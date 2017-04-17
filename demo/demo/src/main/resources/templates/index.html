@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title>Currency Exchange App</title>
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans|Lato&amp;subset=latin-ext" >
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans|Lato&amp;subset=latin-ext" />
 	<script type="text/javascript" src="/static/angular.min.js" th:src="@{/angular.min.js}"></script>
 	<script type="text/javascript" src="/static/app/app.module.js" th:src="@{/app.module.js}"></script>
 	<script type="text/javascript" src="/static/app/currency.controller.js" th:src="@{/currency.controller.js}"></script>
@@ -13,7 +13,7 @@
 
 </head>
 
-<body ng-app = "app" ng-controller="currencyController as vm">
+<body ng-app = "app" ng-controller="currencyController">
 
 <header>
 	<div id="logo">
@@ -27,19 +27,21 @@
 <section>
 
 <div>
-<p>Hello it's me!</p>
+<p style="color: black">Hello it's me!</p>
 </div>
 
-	<input type="text" placeholder="currency" onfocus="this.placeholder=''" onblur="this.placeholder='currency'" >
-	<input type="text" placeholder="convert to" onfocus="this.placeholder=''" onblur="this.placeholder='convert to'" >
-	<input type="submit" value="Convert">
+	<form>
+		<input type="text" placeholder="in" onfocus="this.placeholder=''" onblur="this.placeholder='currency'" />
+		<input type="text" placeholder="out" onfocus="this.placeholder=''" onblur="this.placeholder='convert to'" />
+		<input type="submit" value="submit"/>
+	</form>
 
 </section>
 
 
 <footer>
 	<div>
-    <p th:text="'Page was rendered ' + ${#dates.format(datetime, 'dd/MM/YYYY HH:mm')}">Page was rendered today.</p>
+    <p style="color: black" th:text="'Page was rendered ' + ${#dates.format(datetime, 'dd/MM/YYYY HH:mm')}">Page was rendered today.</p>
 	</div>
 </footer>
 
