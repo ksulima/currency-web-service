@@ -6,12 +6,26 @@
     'use strict';
     angular
         .module('app')
-        .controller('currencyController', CurrencyController);
+        .controller('CurrencyController', CurrencyController);
 
-    CurrencyController.$inject = [];
+    CurrencyController.$inject = ['$http'];
 
-    function CurrencyController(){
+    function CurrencyController($http){
         var vm = this;
+
+        vm.currencies = [];
+        vm.getLatest = getLatest;
+
+        function getLatest(){
+            var url = "/api/get/latest";
+            var currencyPromise = $http.get(url);
+            currencyPromise.then(function(response) {
+                vm.currencies = response.data;
+            });
+        }
+
+
+
     }
 
 })();

@@ -14,7 +14,7 @@ import java.util.Date;
 @Controller
 public class ViewController {
 
-    @RequestMapping("/start")
+    @RequestMapping("/")
     public String index(Model model){
         model.addAttribute("datetime", new Date());
         model.addAttribute("username", "Public User");

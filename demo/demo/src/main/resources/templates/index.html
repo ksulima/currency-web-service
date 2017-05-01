@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html ng-app= "app" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title>Currency Exchange App</title>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
     <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans|Lato&amp;subset=latin-ext" />
-	<script type="text/javascript" src="/static/angular.min.js" th:src="@{/angular.min.js}"></script>
-	<script type="text/javascript" src="/static/app/app.module.js" th:src="@{/app.module.js}"></script>
-	<script type="text/javascript" src="/static/app/currency.controller.js" th:src="@{/currency.controller.js}"></script>
+
+	<script src="/static/app/app.module.js" th:src="@{/app/app.module.js}"></script>
+	<script src="/static/app/currency.controller.js" th:src="@{/app/currency.controller.js}"></script>
+
 
 
 </head>
 
-<body ng-app = "app" ng-controller="currencyController">
+<body ng-controller="CurrencyController as vm">
 
 <header>
 	<div id="logo">
@@ -33,7 +36,15 @@
 	<form>
 		<input type="text" placeholder="in" onfocus="this.placeholder=''" onblur="this.placeholder='currency'" />
 		<input type="text" placeholder="out" onfocus="this.placeholder=''" onblur="this.placeholder='convert to'" />
-		<input type="submit" value="submit"/>
+		<input type="text" placeholder="date" onfocus="this.placeholder=''" onblur="this.placeholder='yyyy-mm-dd'" />
+		<input type="submit" value="check"/>
+		<br><br>
+
+		<button ng-click="vm.getLatest()">get Latest</button>
+		<br>
+		<p style="color: black">{{vm.currencies.rates}}</p>
+		<br><br>
+
 	</form>
 
 </section>
