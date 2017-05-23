@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Currency;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * Created by Krzysztof Sulima on 08.03.2017.
@@ -26,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class CurrencyExchangeController {
+
 
     @RequestMapping("/currency/{number}")
     public Long multiplyByFive(@PathVariable Long number) {
@@ -55,6 +55,7 @@ public class CurrencyExchangeController {
 
     @Autowired
     private Collection<CurrencyService> currencyServices;
+
 
     @RequestMapping("/currency/all")
     public List<String> allCurrencies() {
@@ -97,16 +98,33 @@ public class CurrencyExchangeController {
         return exchangeClient.getExchangeInOut(inCurrency, outCurrency, date);
     }
 
-
+    @RequestMapping("get/period/{inCurrency}/{outCurrency}/{startDate}/{endDate}")
+    public Set<ExchangeModel> getExchangeFromPeriod(@PathVariable String inCurrency,
+                                                     @PathVariable String outCurrency,
+                                                     @PathVariable String startDate,
+                                                     @PathVariable String endDate){
+        Set<ExchangeModel> result = new HashSet<ExchangeModel>();
+        for (LocalDate date = LocalDate.parse(startDate); date.isBefore(LocalDate.parse(endDate)); date = date.plusDays(1))
+        {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-LL-dd");
+            String formattedString = date.format(formatter);
+            try{
+                result.add(exchangeClient.getExchangeInOut(inCurrency, outCurrency, formattedString));
+            }catch(Exception e){
+                throw new RuntimeException("Exchange rate not found for date "+formattedString);
+            }
+        }
+        return result;
+    }
 
 
     @Autowired
     private CurrencyRepository currencyRepository;
 
-    @RequestMapping("/db/save/{inCurrency}/{outCurrency}/{date}")
-    public String saveCurrencyToDB(@PathVariable String inCurrency,
-                                @PathVariable String outCurrency,
-                                @PathVariable String date) {
+    @RequestMapping("/save/{inCurrency}/{outCurrency}/{date}")
+    public String saveCurrencyToDatabase(@PathVariable String inCurrency,
+                                         @PathVariable String outCurrency,
+                                         @PathVariable String date) {
 
         List<MyCurrency> itemList = currencyRepository.findByDateAndBaseAndWaluta(date, inCurrency, outCurrency);
         if(itemList.size() == 0){
@@ -122,6 +140,27 @@ public class CurrencyExchangeController {
         return "Not added";
     }
 
+    @RequestMapping("save/period/{inCurrency}/{outCurrency}/{startDate}/{endDate}")
+    public String saveCurrencyFromPeriodToDatabase(@PathVariable String inCurrency,
+                                                   @PathVariable String outCurrency,
+                                                   @PathVariable String startDate,
+                                                   @PathVariable String endDate){
+
+        Set<ExchangeModel> data = getExchangeFromPeriod(inCurrency, outCurrency, startDate, endDate);
+        for(ExchangeModel dataItem: data){
+            List<MyCurrency> DatabaseItems = currencyRepository.findByDateAndBaseAndWaluta(dataItem.getDate(), inCurrency, outCurrency);
+            if(DatabaseItems.size() == 0){
+                MyCurrency myCurrency = new MyCurrency();
+                myCurrency.setDate(dataItem.getDate());
+                myCurrency.setBase(dataItem.getBase());
+                myCurrency.setWaluta(outCurrency);
+                myCurrency.setRate(dataItem.getRates().get(outCurrency));
+                currencyRepository.save(myCurrency);
+            }
+        }
+        return "Saving finished";
+    }
+
 
 
     @RequestMapping("/multi/{inCurrency}/{outCurrencies}")
@@ -135,7 +174,7 @@ public class CurrencyExchangeController {
 
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
-    ResponseEntity<ExchangeModel> getExchangeInOut(@RequestBody CurrencyParams param) {
+    public ResponseEntity<ExchangeModel> getExchangeInOut(@RequestBody CurrencyParams param) {
         return new ResponseEntity(exchangeClient.getExchangeInOut(param.getInCurrency(), param.getOutCurrency(), param.getDate()), HttpStatus.OK);
     }
 
@@ -153,5 +192,6 @@ public class CurrencyExchangeController {
             return new ResponseEntity(fixerdata, HttpStatus.BAD_REQUEST);
         }
     }
+
 
 }
