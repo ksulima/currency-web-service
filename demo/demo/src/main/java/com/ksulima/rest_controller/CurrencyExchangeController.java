@@ -27,6 +27,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class CurrencyExchangeController {
 
+
     @RequestMapping("/currency/{number}")
     public Long multiplyByFive(@PathVariable Long number) {
         return number * 5;
@@ -55,6 +56,7 @@ public class CurrencyExchangeController {
 
     @Autowired
     private Collection<CurrencyService> currencyServices;
+
 
     @RequestMapping("/currency/all")
     public List<String> allCurrencies() {

@@ -34,9 +34,6 @@ public class MyCurrency {
     private String rate;
 
 
-
-
-
     public String getDate() {
         return date;
     }

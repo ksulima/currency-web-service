@@ -19,6 +19,8 @@ public interface CurrencyRepository extends JpaRepository<MyCurrency, Long> {
 
     List<MyCurrency> findByDateAndBaseAndWaluta(String date, String base, String waluta);
 
+
+
 //    @Query("select count(u) from  MyCurrency u where u.name = ?1")
 //    Long checkIfdataExist(String name);
 
