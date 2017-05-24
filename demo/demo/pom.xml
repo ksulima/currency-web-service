@@ -72,6 +72,12 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.tngtech.java</groupId>
+			<artifactId>junit-dataprovider</artifactId>
+			<version>1.10.0</version>
+			<scope>test</scope>
+		</dependency>
 
 
 		<!-- polaczenie z bazą danych

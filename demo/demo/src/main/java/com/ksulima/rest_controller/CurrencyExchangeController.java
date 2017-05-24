@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -36,8 +38,8 @@ public class CurrencyExchangeController {
     @RequestMapping("/currency/multiply/{value}/{exchangeRatio}")
     public String currencyMultiplier(@RequestParam("currFrom") String currFrom,
                                      @RequestParam("currTo") String currTo,
-                                     @PathVariable Long value,
-                                     @PathVariable Long exchangeRatio) {
+                                     @PathVariable Double value,
+                                     @PathVariable Double exchangeRatio) {
 
         try {
             Currency currencyFrom = Currency.getInstance(currFrom);
@@ -49,7 +51,10 @@ public class CurrencyExchangeController {
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("invalid currency code");
         }
-        return value + " " + currFrom + " equals " + value * exchangeRatio + " " + currTo;
+        Double result = value*exchangeRatio;
+        BigDecimal bd = new BigDecimal(result);
+        bd = bd.setScale(3, RoundingMode.HALF_UP);
+        return value + " " + currFrom + " equals " + bd.toString() + " " + currTo;
     }
 
 

@@ -19,7 +19,5 @@ public interface CurrencyRepository extends JpaRepository<MyCurrency, Long> {
 
     List<MyCurrency> findByDateAndBaseAndWaluta(String date, String base, String waluta);
 
-
-
 }
 

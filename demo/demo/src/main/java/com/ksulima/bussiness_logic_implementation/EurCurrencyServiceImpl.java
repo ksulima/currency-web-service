@@ -14,4 +14,8 @@ public class EurCurrencyServiceImpl implements CurrencyService {
     public String getCurrency() {
         return "4.35 EUR/PLN";
     }
+
+
+
+
 }
