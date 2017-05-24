@@ -24,11 +24,9 @@ public class ExchangeClient {
         return rest.getForObject(url, ExchangeModel.class);
     }
 
-
     public ExchangeModel getExchangeInOut(String inCurrency, String outCurrency, String date){
         return rest.getForObject(urlModif(inCurrency, outCurrency, date), ExchangeModel.class);
     }
-
 
     private String urlModif(String inCurrency, String outCurrency, String date){
         return "http://api.fixer.io/"+date+"?symbols="+outCurrency+"&base=" + inCurrency;
