@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,4 +46,9 @@ public class CurrencyExchangeControllerTest {
         Assert.assertThat(resultWords.get(3), equalTo(product));
     }
 
+    @Test
+    public void shouldReturnNegativeResult(){
+        Long result = controler.multiplyByFive(-4L);
+        Assert.assertEquals(new Long(-20L), result);
+    }
 }
