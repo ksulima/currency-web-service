@@ -18,12 +18,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class CurrencyExchangeControllerTest2 {
 
+    @InjectMocks
+    CurrencyExchangeController sut;
+
 
     @Mock(answer = Answers.RETURNS_MOCKS)
     private ExchangeClient exchangeClient;
 
-    @InjectMocks
-    CurrencyExchangeController sut;
 
     @Test
     public void shouldReturnExchange(){
