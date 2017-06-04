@@ -6,34 +6,37 @@ import com.ksulima.rest_controller.CurrencyExchangeController;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.mockito.Mockito.when;
+
 /**
- * Created by Krzysztof Sulima on 28.05.2017.
+ * Created by Krzysztof Sulima on 04.06.2017.
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class CurrencyExchangeControllerTest2 {
+public class CurrencyExchangeControllerTest3 {
 
     @InjectMocks
     CurrencyExchangeController sut;
 
 
-    @Mock(answer = Answers.RETURNS_MOCKS)
+    @Mock
     private ExchangeClient exchangeClient;
 
 
 
     @Test
     public void shouldReturnExchange(){
-        ExchangeModel model = sut.getExchange();
-        Assert.assertNotNull(model);
+        ExchangeModel model = new ExchangeModel();
+        model.setBase("EUR");
+
+        when(exchangeClient.getExchange()).thenReturn(model);
+
+        ExchangeModel result = sut.getExchange();
+        Assert.assertNotNull(result);
+        Assert.assertEquals(model.getBase(), result.getBase());
     }
-
-
-
-
 }

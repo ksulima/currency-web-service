@@ -44,7 +44,7 @@ public class ExchangeModel {
       this.date = date;
      }
 
-     public Map<String, String> getRates() {
+     public Map<String, String> getRates(){
       return rates;
      }
 

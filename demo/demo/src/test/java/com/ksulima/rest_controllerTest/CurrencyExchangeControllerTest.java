@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,9 +32,9 @@ public class CurrencyExchangeControllerTest {
         Assert.assertEquals(exp, controler.multiplyByFive(actual));
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
     public void shouldThrowInvalidCurrencyCode(){
-        controler.currencyMultiplier("EURR", "PLN", 1.0, 1.0);
+        controler.currencyMultiplier("mistake", "PLN", 1.0, 1.0);
     }
 
     @Test
@@ -51,4 +50,13 @@ public class CurrencyExchangeControllerTest {
         Long result = controler.multiplyByFive(-4L);
         Assert.assertEquals(new Long(-20L), result);
     }
+
+
+
+
+
 }
+
+
+
+

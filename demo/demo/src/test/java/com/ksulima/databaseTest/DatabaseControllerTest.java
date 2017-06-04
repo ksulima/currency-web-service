@@ -30,6 +30,8 @@ public class DatabaseControllerTest {
     @Mock
     CurrencyRepository currencyRepository;
 
+
+
     @Test
     public void shouldReturnFirst1ById(){
         String result = sut.findTop1ById().getRate();
