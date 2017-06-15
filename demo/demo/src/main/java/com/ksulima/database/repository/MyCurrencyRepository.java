@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 @Repository
-public interface CurrencyRepository extends JpaRepository<MyCurrency, Long> {
+public interface MyCurrencyRepository extends JpaRepository<MyCurrency, Long> {
 
     MyCurrency findById(Long id);
 

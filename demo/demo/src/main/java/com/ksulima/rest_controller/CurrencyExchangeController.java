@@ -5,7 +5,7 @@ import com.ksulima.bussiness_logic_interface.model.ExchangeModel;
 import com.ksulima.bussiness_logic_interface.service.CurrencyService;
 import com.ksulima.bussiness_logic_interface.service.CurrencyTotService;
 import com.ksulima.database.entity.MyCurrency;
-import com.ksulima.database.repository.CurrencyRepository;
+import com.ksulima.database.repository.MyCurrencyRepository;
 import com.ksulima.rest_client.ExchangeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -124,14 +124,14 @@ public class CurrencyExchangeController {
 
 
     @Autowired
-    private CurrencyRepository currencyRepository;
+    private MyCurrencyRepository myCurrencyRepository;
 
     @RequestMapping("/save/{inCurrency}/{outCurrency}/{date}")
     public String saveCurrencyToDatabase(@PathVariable String inCurrency,
                                          @PathVariable String outCurrency,
                                          @PathVariable String date) {
 
-        List<MyCurrency> itemList = currencyRepository.findByDateAndBaseAndWaluta(date, inCurrency, outCurrency);
+        List<MyCurrency> itemList = myCurrencyRepository.findByDateAndBaseAndWaluta(date, inCurrency, outCurrency);
         if(itemList.size() == 0){
             ExchangeModel fixerdata = exchangeClient.getExchangeInOut(inCurrency, outCurrency, date);
             MyCurrency myCurrency = new MyCurrency();
@@ -139,7 +139,7 @@ public class CurrencyExchangeController {
             myCurrency.setBase(fixerdata.getBase());
             myCurrency.setWaluta(outCurrency);
             myCurrency.setRate(fixerdata.getRates().get(outCurrency));
-            currencyRepository.save(myCurrency);
+            myCurrencyRepository.save(myCurrency);
             return "Added";
         }
         return "Not added";
@@ -153,14 +153,14 @@ public class CurrencyExchangeController {
 
         Set<ExchangeModel> data = getExchangeFromPeriod(inCurrency, outCurrency, startDate, endDate);
         for(ExchangeModel dataItem: data){
-            List<MyCurrency> DatabaseItems = currencyRepository.findByDateAndBaseAndWaluta(dataItem.getDate(), inCurrency, outCurrency);
+            List<MyCurrency> DatabaseItems = myCurrencyRepository.findByDateAndBaseAndWaluta(dataItem.getDate(), inCurrency, outCurrency);
             if(DatabaseItems.size() == 0){
                 MyCurrency myCurrency = new MyCurrency();
                 myCurrency.setDate(dataItem.getDate());
                 myCurrency.setBase(dataItem.getBase());
                 myCurrency.setWaluta(outCurrency);
                 myCurrency.setRate(dataItem.getRates().get(outCurrency));
-                currencyRepository.save(myCurrency);
+                myCurrencyRepository.save(myCurrency);
             }
         }
         return "Saving finished";
