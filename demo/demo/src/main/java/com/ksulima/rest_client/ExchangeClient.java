@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 @Service
-public class ExchangeClient {
+public class    ExchangeClient {
 
     private String url = "http://api.fixer.io/latest?symbols=USD,GBP,NOK&base=EUR";
 
@@ -48,7 +48,4 @@ public class ExchangeClient {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }
