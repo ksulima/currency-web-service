@@ -9,4 +9,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CurrencyDictRepository extends JpaRepository<CurrencyDict, Long> {
+
+    CurrencyDict findByDictPkDictId(Long id);
+//    CurrencyDict findByBaseCode(String code);
+
+
 }

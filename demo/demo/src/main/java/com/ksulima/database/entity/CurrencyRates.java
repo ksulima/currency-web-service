@@ -1,39 +1,51 @@
 package com.ksulima.database.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.io.Serializable;
 
 /**
  * Created by Krzysztof Sulima on 15.06.2017.
  */
 @Entity
 @Table(name = "CURRENCY_RATES")
-public class CurrencyRates {
+public class CurrencyRates implements Serializable {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "CURRENCY_ID")
-    private Long currencyId;
+    @EmbeddedId
+    private RatesPK ratesPK;
 
-    @Temporal(TemporalType.DATE)
-    private Date date;
-
-    @Column(name = "DICT_ID_RATES")
-    private Long dictId;
-
-    @Column(name = "BASE_CODE_RATES")
-    private String baseCode;
-
-    private String currency;
     private String rate;
 
     @ManyToOne
-    @JoinColumn(name = "DICT_ID")
-    private CurrencyDict currencyDictId;
+    @JoinColumns(
+            {@JoinColumn(name = "DICT_ID_FK", referencedColumnName = "DICT_ID"),
+            @JoinColumn(name = "BASE_CODE_FK", referencedColumnName = "BASE_CODE")})
+    private CurrencyDict currencyDict;
 
 
-    @ManyToOne
-    @JoinColumn(name = "BASE_CODE")
-    private CurrencyDict currencyDictBaseCode;
+    public RatesPK getRatesPK() {
+        return ratesPK;
+    }
+
+    public void setRatesPK(RatesPK ratesPK) {
+        this.ratesPK = ratesPK;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+    public CurrencyDict getCurrencyDict() {
+        return currencyDict;
+    }
+
+    public void setCurrencyDict(CurrencyDict currencyDict) {
+        this.currencyDict = currencyDict;
+    }
+
+
 
 }

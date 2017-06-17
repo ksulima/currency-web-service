@@ -1,6 +1,6 @@
 package com.ksulima.databaseTest;
 
-import com.ksulima.database.DatabaseController;
+import com.ksulima.database.MyCurrencyController;
 import com.ksulima.database.entity.MyCurrency;
 import com.ksulima.database.repository.MyCurrencyRepository;
 import org.junit.Assert;
@@ -20,11 +20,11 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class DatabaseControllerTest {
+public class MyCurrencyControllerTest {
 
 
     @InjectMocks
-    DatabaseController sut;
+    MyCurrencyController sut;
 
     @Mock
     MyCurrencyRepository myCurrencyRepository;

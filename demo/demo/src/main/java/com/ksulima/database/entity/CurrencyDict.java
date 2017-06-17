@@ -1,49 +1,28 @@
 package com.ksulima.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
  * Created by Krzysztof Sulima on 15.06.2017.
  */
 
-@Entity
+@Entity(name = "CurrencyDict")
 @Table(name = "CURRENCY_DICT")
-public class CurrencyDict {
+public class CurrencyDict implements Serializable {
 
-
-    @Id
-    @GeneratedValue
-    @Column(name = "DICT_ID")
-    private Long dictId;
-
-
-    @Column(name = "BASE_CODE")
-    private String baseCode;
+    @EmbeddedId
+    private DictPk dictPk;
 
     private String name;
 
-    @OneToMany(mappedBy = "currencyDictId", cascade = CascadeType.ALL)
-    private Set<CurrencyRates> currencyDictIdSet;
+    @JsonIgnore
+    @OneToMany(mappedBy = "currencyDict", cascade = CascadeType.ALL)
+    private Set<CurrencyRates> currencyRates;
 
-    @OneToMany(mappedBy = "currencyDictBaseCode", cascade = CascadeType.ALL)
-    private Set<CurrencyRates> currencyDictBaseCodeSet;
-
-    public Long getDictId() {
-        return dictId;
-    }
-
-    public void setDictId(Long dictId) {
-        this.dictId = dictId;
-    }
-
-    public String getBaseCode() {
-        return baseCode;
-    }
-
-    public void setBaseCode(String baseCode) {
-        this.baseCode = baseCode;
-    }
 
     public String getName() {
         return name;
@@ -53,10 +32,20 @@ public class CurrencyDict {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "currencyDictId")
-    private Set<CurrencyRates> currencyDictId;
+    public DictPk getDictPk() {
+        return dictPk;
+    }
 
-    @OneToMany(mappedBy = "currencyDictBaseCode")
-    private Set<CurrencyRates> currencyDictBaseCode;
+    public void setDictPk(DictPk dictPk) {
+        this.dictPk = dictPk;
+    }
+
+    public Set<CurrencyRates> getCurrencyRates() {
+        return currencyRates;
+    }
+
+    public void setCurrencyRates(Set<CurrencyRates> currencyRates) {
+        this.currencyRates = currencyRates;
+    }
 
 }

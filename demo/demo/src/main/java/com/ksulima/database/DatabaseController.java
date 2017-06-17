@@ -1,51 +1,28 @@
 package com.ksulima.database;
 
-import com.ksulima.database.entity.MyCurrency;
-import com.ksulima.database.repository.MyCurrencyRepository;
+import com.ksulima.database.entity.CurrencyDict;
+import com.ksulima.database.service.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
- * Created by Krzysztof Sulima on 04.04.2017.
+ * Created by Krzysztof Sulima on 17.06.2017.
  */
 
-
 @RestController
-@RequestMapping("/db")
 public class DatabaseController {
 
-
     @Autowired
-    MyCurrencyRepository myCurrencyRepository;
+    DatabaseService databaseService;
 
-    @RequestMapping("/find/{id}")
-    public MyCurrency findById(@PathVariable Long id){
-
-        return myCurrencyRepository.findById(id);
+    @RequestMapping(value = "/dict/add", method = RequestMethod.PUT)
+    public void addDictRecord(@RequestBody CurrencyDict currencyDict){
+        databaseService.addDictRecord(currencyDict);
     }
 
-    @RequestMapping("/find/last")
-    public MyCurrency findTop1ById(){
-
-        return myCurrencyRepository.findFirst1ByOrderByIdDesc();
-    }
-
-    @RequestMapping("/find/all")
-    public List<MyCurrency> findAll(){
-        return myCurrencyRepository.findAll();
-    }
-
-    @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
-    public void removeRecord(@PathVariable Long id){
-        myCurrencyRepository.delete(id);
-    }
-
-    @RequestMapping(value = "/add/record", method = RequestMethod.PUT)
-    public String addRecord(@RequestBody MyCurrency currency){
-        myCurrencyRepository.save(currency);
-        return "Now currency archive contains "+ myCurrencyRepository.count() + " records.";
+    @RequestMapping(value = "/dict/{id}", method = RequestMethod.GET)
+    public CurrencyDict findDictRecordById(@PathVariable Long id){
+        return databaseService.findById(id);
     }
 
 
