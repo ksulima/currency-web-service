@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CurrencyRatesRepository extends JpaRepository<CurrencyRates, Long> {
 
+    CurrencyRates findByRatesPkCurrencyId(Long id);
+
 }

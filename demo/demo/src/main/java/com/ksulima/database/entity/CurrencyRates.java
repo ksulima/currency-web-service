@@ -11,9 +11,10 @@ import java.io.Serializable;
 public class CurrencyRates implements Serializable {
 
     @EmbeddedId
-    private RatesPK ratesPK;
+    private RatesPk ratesPk;
 
     private String rate;
+
 
     @ManyToOne
     @JoinColumns(
@@ -22,12 +23,12 @@ public class CurrencyRates implements Serializable {
     private CurrencyDict currencyDict;
 
 
-    public RatesPK getRatesPK() {
-        return ratesPK;
+    public RatesPk getRatesPk() {
+        return ratesPk;
     }
 
-    public void setRatesPK(RatesPK ratesPK) {
-        this.ratesPK = ratesPK;
+    public void setRatesPk(RatesPk ratesPk) {
+        this.ratesPk = ratesPk;
     }
 
     public String getRate() {

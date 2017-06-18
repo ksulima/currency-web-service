@@ -15,12 +15,11 @@ public class DictPk implements Serializable {
 
     @GeneratedValue
     @Column(name = "DICT_ID")
-    private Long dictId;
+    public Long dictId;
 
 
     @Column(name = "BASE_CODE")
-    private String baseCode;
-
+    public String baseCode;
 
     public DictPk() {
     }

@@ -1,6 +1,7 @@
 package com.ksulima.database;
 
 import com.ksulima.database.entity.CurrencyDict;
+import com.ksulima.database.entity.CurrencyRates;
 import com.ksulima.database.service.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +21,25 @@ public class DatabaseController {
         databaseService.addDictRecord(currencyDict);
     }
 
-    @RequestMapping(value = "/dict/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/dict/add/{baseCode}/{name}", method = RequestMethod.PUT)
+    public void addDictRecord(@PathVariable String baseCode,
+                              @PathVariable String name){
+        databaseService.addDictRecord(baseCode, name);
+    }
+
+    @RequestMapping(value = "/dict/id/{id}", method = RequestMethod.GET)
     public CurrencyDict findDictRecordById(@PathVariable Long id){
-        return databaseService.findById(id);
+        return databaseService.findDictById(id);
+    }
+
+    @RequestMapping(value = "/dict/code/{code}", method = RequestMethod.GET)
+    public CurrencyDict findDictRecordByCode(@PathVariable String code){
+        return databaseService.findDictByCode(code);
+    }
+
+    @RequestMapping(value = "/rates/id/{id}", method = RequestMethod.GET)
+    public CurrencyRates findRatesRecordById(@PathVariable Long id){
+        return databaseService.findRatesById(id);
     }
 
 

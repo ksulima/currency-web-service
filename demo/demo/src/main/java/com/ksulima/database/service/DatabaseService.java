@@ -1,6 +1,7 @@
 package com.ksulima.database.service;
 
 import com.ksulima.database.entity.CurrencyDict;
+import com.ksulima.database.entity.CurrencyRates;
 import com.ksulima.database.repository.CurrencyDictRepository;
 import com.ksulima.database.repository.CurrencyRatesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ public class DatabaseService {
 
     @Autowired
     private CurrencyDictRepository currDictRepo;
-
     @Autowired
     private CurrencyRatesRepository currRatesRepo;
 
@@ -23,8 +23,25 @@ public class DatabaseService {
         currDictRepo.save(item);
     }
 
-    public CurrencyDict findById(Long id){
+    public void addDictRecord(String baseCode, String name){
+        CurrencyDict item = new CurrencyDict();
+        item.getDictPk().setBaseCode(baseCode);
+        item.setName(name);
+        currDictRepo.save(item);
+    }
+
+
+    public CurrencyDict findDictById(Long id){
         return currDictRepo.findByDictPkDictId(id);
+    }
+
+
+    public CurrencyDict findDictByCode(String code){
+        return currDictRepo.findByDictPkBaseCode(code);
+    }
+
+    public CurrencyRates findRatesById(Long id){
+        return currRatesRepo.findByRatesPkCurrencyId(id);
     }
 
 }

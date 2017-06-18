@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by Krzysztof Sulima on 16.06.2017.
  */
 @Embeddable
-public class RatesPK implements Serializable {
+public class RatesPk implements Serializable {
 
 
     @GeneratedValue
@@ -20,14 +20,14 @@ public class RatesPK implements Serializable {
 
     protected String currency;
 
-    public RatesPK() {
+    public RatesPk() {
     }
 
-    public RatesPK(String currency) {
+    public RatesPk(String currency) {
         this.currency = currency;
     }
 
-    public RatesPK(Date date, String currency) {
+    public RatesPk(Date date, String currency) {
         this.date = date;
         this.currency = currency;
     }
@@ -35,9 +35,9 @@ public class RatesPK implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RatesPK)) return false;
+        if (!(o instanceof RatesPk)) return false;
 
-        RatesPK that = (RatesPK) o;
+        RatesPk that = (RatesPk) o;
 
         if (currencyId != null ? !currencyId.equals(that.currencyId) : that.currencyId != null) return false;
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
