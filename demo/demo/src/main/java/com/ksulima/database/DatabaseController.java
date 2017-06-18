@@ -27,6 +27,11 @@ public class DatabaseController {
         databaseService.addDictRecord(baseCode, name);
     }
 
+    @RequestMapping(value = "/rates/add/{baseCode}", method = RequestMethod.PUT)
+    public void addRatesRecord(@RequestBody CurrencyRates currencyRates, @PathVariable String baseCode){
+        databaseService.addRatesRecord(currencyRates, baseCode);
+    }
+
     @RequestMapping(value = "/dict/id/{id}", method = RequestMethod.GET)
     public CurrencyDict findDictRecordById(@PathVariable Long id){
         return databaseService.findDictById(id);

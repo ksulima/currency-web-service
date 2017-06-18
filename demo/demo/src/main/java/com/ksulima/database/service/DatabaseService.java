@@ -30,6 +30,11 @@ public class DatabaseService {
         currDictRepo.save(item);
     }
 
+    public void addRatesRecord(CurrencyRates item, String code){
+        CurrencyDict currencyDict = findDictByCode(code);
+        item.setCurrencyDict(currencyDict);
+        currRatesRepo.save(item);
+    }
 
     public CurrencyDict findDictById(Long id){
         return currDictRepo.findByDictPkDictId(id);
@@ -43,5 +48,6 @@ public class DatabaseService {
     public CurrencyRates findRatesById(Long id){
         return currRatesRepo.findByRatesPkCurrencyId(id);
     }
+
 
 }

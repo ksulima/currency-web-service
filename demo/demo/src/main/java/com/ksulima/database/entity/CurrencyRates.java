@@ -1,5 +1,7 @@
 package com.ksulima.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -15,8 +17,8 @@ public class CurrencyRates implements Serializable {
 
     private String rate;
 
-
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
     @JoinColumns(
             {@JoinColumn(name = "DICT_ID_FK", referencedColumnName = "DICT_ID"),
             @JoinColumn(name = "BASE_CODE_FK", referencedColumnName = "BASE_CODE")})

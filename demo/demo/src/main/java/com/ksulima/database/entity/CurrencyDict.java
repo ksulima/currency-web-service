@@ -1,5 +1,7 @@
 package com.ksulima.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -19,6 +21,7 @@ public class CurrencyDict implements Serializable {
 
 
     @OneToMany(mappedBy = "currencyDict", cascade = CascadeType.ALL)
+    @JsonBackReference
     private Set<CurrencyRates> currencyRates;
 
 
