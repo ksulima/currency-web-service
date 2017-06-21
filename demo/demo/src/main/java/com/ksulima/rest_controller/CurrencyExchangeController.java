@@ -122,52 +122,6 @@ public class CurrencyExchangeController {
         return result;
     }
 
-
-    @Autowired
-    private MyCurrencyRepository myCurrencyRepository;
-
-    @RequestMapping("/save/{inCurrency}/{outCurrency}/{date}")
-    public String saveCurrencyToDatabase(@PathVariable String inCurrency,
-                                         @PathVariable String outCurrency,
-                                         @PathVariable String date) {
-
-        List<MyCurrency> itemList = myCurrencyRepository.findByDateAndBaseAndWaluta(date, inCurrency, outCurrency);
-        if(itemList.size() == 0){
-            ExchangeModel fixerdata = exchangeClient.getExchangeInOut(inCurrency, outCurrency, date);
-            MyCurrency myCurrency = new MyCurrency();
-            myCurrency.setDate(fixerdata.getDate());
-            myCurrency.setBase(fixerdata.getBase());
-            myCurrency.setWaluta(outCurrency);
-            myCurrency.setRate(fixerdata.getRates().get(outCurrency));
-            myCurrencyRepository.save(myCurrency);
-            return "Added";
-        }
-        return "Not added";
-    }
-
-    @RequestMapping("save/period/{inCurrency}/{outCurrency}/{startDate}/{endDate}")
-    public String saveCurrencyFromPeriodToDatabase(@PathVariable String inCurrency,
-                                                   @PathVariable String outCurrency,
-                                                   @PathVariable String startDate,
-                                                   @PathVariable String endDate){
-
-        Set<ExchangeModel> data = getExchangeFromPeriod(inCurrency, outCurrency, startDate, endDate);
-        for(ExchangeModel dataItem: data){
-            List<MyCurrency> DatabaseItems = myCurrencyRepository.findByDateAndBaseAndWaluta(dataItem.getDate(), inCurrency, outCurrency);
-            if(DatabaseItems.size() == 0){
-                MyCurrency myCurrency = new MyCurrency();
-                myCurrency.setDate(dataItem.getDate());
-                myCurrency.setBase(dataItem.getBase());
-                myCurrency.setWaluta(outCurrency);
-                myCurrency.setRate(dataItem.getRates().get(outCurrency));
-                myCurrencyRepository.save(myCurrency);
-            }
-        }
-        return "Saving finished";
-    }
-
-
-
     @RequestMapping("/multi/{inCurrency}/{outCurrencies}")
     public ExchangeModel getMultiExchange(@PathVariable String inCurrency,
                                           @PathVariable String outCurrencies) {
@@ -197,5 +151,35 @@ public class CurrencyExchangeController {
             return new ResponseEntity(fixerdata, HttpStatus.BAD_REQUEST);
         }
     }
+
+
+    // fixer --> Database
+
+    @Autowired
+    private MyCurrencyRepository myCurrencyRepository;
+
+    @RequestMapping("save/period/{inCurrency}/{outCurrency}/{startDate}/{endDate}")
+    public String saveCurrencyFromPeriodToDatabase(@PathVariable String inCurrency,
+                                                   @PathVariable String outCurrency,
+                                                   @PathVariable String startDate,
+                                                   @PathVariable String endDate){
+
+        Set<ExchangeModel> data = getExchangeFromPeriod(inCurrency, outCurrency, startDate, endDate);
+        for(ExchangeModel dataItem: data){
+            List<MyCurrency> DatabaseItems = myCurrencyRepository.findByDateAndBaseAndWaluta(dataItem.getDate(), inCurrency, outCurrency);
+            if(DatabaseItems.size() == 0){
+                MyCurrency myCurrency = new MyCurrency();
+                myCurrency.setDate(dataItem.getDate());
+                myCurrency.setBase(dataItem.getBase());
+                myCurrency.setWaluta(outCurrency);
+                myCurrency.setRate(dataItem.getRates().get(outCurrency));
+                myCurrencyRepository.save(myCurrency);
+            }
+        }
+        return "Saving finished";
+    }
+
+
+
 
 }

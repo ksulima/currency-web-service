@@ -13,7 +13,8 @@ CREATE TABLE `currency_dict` (
   `dict_id` int(11) NOT NULL AUTO_INCREMENT,
   `base_code` varchar(11) NOT NULL,
   `name` varchar(45) NOT NULL,
-  PRIMARY KEY (`dict_id`, `base_code`)
+  PRIMARY KEY (`dict_id`),
+  UNIQUE KEY `base_code` (`base_code`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 ;
 
@@ -23,7 +24,7 @@ ALTER TABLE `currency_dict` ADD INDEX `base_code` (`base_code`);
 
 CREATE TABLE `currency_rates` (
   `currency_id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` DATE NOT NULL,
+  `date` varchar(11) NOT NULL,
   `dict_id_fk` int(11) NOT NULL,
   `base_code_fk` varchar(11) NOT NULL,
   `currency` varchar(11) NOT NULL,

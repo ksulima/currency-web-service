@@ -1,8 +1,9 @@
 package com.ksulima.database.entity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by Krzysztof Sulima on 16.06.2017.
@@ -15,8 +16,7 @@ public class RatesPk implements Serializable {
     @Column(name = "CURRENCY_ID")
     protected Long currencyId;
 
-    @Temporal(TemporalType.DATE)
-    protected Date date;
+    protected String date;
 
     protected String currency;
 
@@ -27,7 +27,7 @@ public class RatesPk implements Serializable {
         this.currency = currency;
     }
 
-    public RatesPk(Date date, String currency) {
+    public RatesPk(String date, String currency) {
         this.date = date;
         this.currency = currency;
     }
@@ -60,11 +60,11 @@ public class RatesPk implements Serializable {
         this.currencyId = currencyId;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
