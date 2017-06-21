@@ -1,6 +1,6 @@
 package com.ksulima.rest_controllerTest;
 
-import com.ksulima.rest_controller.CurrencyExchangeController;
+import com.ksulima.rest_controller.BasicController;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import org.junit.Assert;
@@ -19,11 +19,11 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @RunWith(DataProviderRunner.class)
 public class CurrencyExchangeControllerTest {
 
-    private CurrencyExchangeController controler;
+    private BasicController controler;
 
     @Before
     public void setup(){
-        controler = new CurrencyExchangeController();
+        controler = new BasicController();
     }
 
     @Test

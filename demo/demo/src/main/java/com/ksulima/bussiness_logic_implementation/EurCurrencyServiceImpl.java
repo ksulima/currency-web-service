@@ -15,7 +15,4 @@ public class EurCurrencyServiceImpl implements CurrencyService {
         return "4.35 EUR/PLN";
     }
 
-
-
-
 }

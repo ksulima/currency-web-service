@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Krzysztof Sulima on 17.06.2017.
  */
 @Service
-public class DatabaseService {
+public class DictAndRatesService {
 
     @Autowired
     private CurrencyDictRepository currDictRepo;

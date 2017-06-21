@@ -17,7 +17,7 @@ public interface MyCurrencyRepository extends JpaRepository<MyCurrency, Long> {
 
     MyCurrency findFirst1ByOrderByIdDesc();
 
-    List<MyCurrency> findByDateAndBaseAndWaluta(String date, String base, String waluta);
+    List<MyCurrency> findByDateAndBaseAndCurrency(String date, String base, String currency);
 
 }
 
