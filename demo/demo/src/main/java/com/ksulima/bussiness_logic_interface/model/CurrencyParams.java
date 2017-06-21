@@ -11,16 +11,18 @@ import lombok.Setter;
 public class CurrencyParams {
 
 
-    private String inCurrency;
-    private String outCurrency;
+    private String base;
+    private String currency;
     private String date;
 
-    public String getInCurrency() {
-        return inCurrency;
+    public String getBase() {
+        return base;
     }
-    public String getOutCurrency() {
-        return outCurrency;
+
+    public String getCurrency() {
+        return currency;
     }
+
     public String getDate() {
         return date;
     }

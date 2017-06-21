@@ -1,8 +1,8 @@
 package com.ksulima.databaseTest;
 
-import com.ksulima.database.DatabaseController;
+import com.ksulima.database.MyCurrencyController;
 import com.ksulima.database.entity.MyCurrency;
-import com.ksulima.database.repository.CurrencyRepository;
+import com.ksulima.database.repository.MyCurrencyRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,14 +20,14 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class DatabaseControllerTest {
+public class MyCurrencyControllerTest {
 
 
     @InjectMocks
-    DatabaseController sut;
+    MyCurrencyController sut;
 
     @Mock
-    CurrencyRepository currencyRepository;
+    MyCurrencyRepository myCurrencyRepository;
 
 
 
@@ -35,13 +35,13 @@ public class DatabaseControllerTest {
     public void shouldReturnFirst1ById(){
         MyCurrency myCurrency = new MyCurrency();
         myCurrency.setBase("EUR");
-        myCurrency.setWaluta("PLN");
+        myCurrency.setCurrency("PLN");
         myCurrency.setRate("4.2424");
-        when(currencyRepository.findFirst1ByOrderByIdDesc()).thenReturn(myCurrency);
+        when(myCurrencyRepository.findFirst1ByOrderByIdDesc()).thenReturn(myCurrency);
 
         String result = sut.findTop1ById().getRate();
         Assert.assertThat("4.2424", equalToIgnoringCase(result));
-        verify(currencyRepository, times(1)).findFirst1ByOrderByIdDesc();
+        verify(myCurrencyRepository, times(1)).findFirst1ByOrderByIdDesc();
     }
 
 
@@ -50,14 +50,14 @@ public class DatabaseControllerTest {
     public void shouldRemoveRecordFromDataBase(){
         long id = 1;
         sut.removeRecord(id);
-        verify(currencyRepository).delete(id);
+        verify(myCurrencyRepository).delete(id);
     }
 
     @Test
     public void shouldAddDefinedRecord(){
         MyCurrency myCurrency = new MyCurrency();
         sut.addRecord(myCurrency);
-        verify(currencyRepository, times(1)).save(myCurrency);
+        verify(myCurrencyRepository, times(1)).save(myCurrency);
     }
 
 

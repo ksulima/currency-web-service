@@ -13,38 +13,38 @@ import java.util.List;
  */
 
 @Service
-public class    ExchangeClient {
+public class ExchangeClient {
 
-    private String url = "http://api.fixer.io/latest?symbols=USD,GBP,NOK&base=EUR";
+    private String url = "http://api.fixer.io/latest?symbols=USD,GBP,PLN&base=EUR";
 
     @Autowired
     private RestTemplate rest;
 
-    public ExchangeModel getExchange(){
+    public ExchangeModel getLatestStandardExRates(){
         return rest.getForObject(url, ExchangeModel.class);
     }
 
-    public ExchangeModel getExchangeInOut(String inCurrency, String outCurrency, String date){
-        return rest.getForObject(urlModif(inCurrency, outCurrency, date), ExchangeModel.class);
+    public ExchangeModel getSelectedExRates(String base, String currency, String date){
+        return rest.getForObject(urlParamForSelectedCurrency(base, currency, date), ExchangeModel.class);
     }
 
-    private String urlModif(String inCurrency, String outCurrency, String date){
-        return "http://api.fixer.io/"+date+"?symbols="+outCurrency+"&base=" + inCurrency;
+    private String urlParamForSelectedCurrency(String base, String currency, String date){
+        return "http://api.fixer.io/"+date+"?symbols="+currency+"&base=" + base;
     }
 
-    public ExchangeModel getMultiExchangeInOut(String inCurrency, String outCurrencies){
-        return rest.getForObject(urlMultiModif(inCurrency, outCurrencies), ExchangeModel.class);
+    public ExchangeModel getLatestExRatesForCurrencies(String base, String currencies){
+        return rest.getForObject(urlParamForCurrencies(base, currencies), ExchangeModel.class);
     }
 
-    private String urlMultiModif(String inCurrency, String outCurrencies){
-        List<String> items = Arrays.asList(outCurrencies.split(","));
+    private String urlParamForCurrencies(String base, String currencies){
+        List<String> items = Arrays.asList(currencies.split(","));
         String url = "http://api.fixer.io/latest?symbols=";
         for(String item : items){
             url += item;
             url += ",";
         }
         url = url.substring(0, url.length()-1);
-        url += "&base=" + inCurrency;
+        url += "&base=" + base;
         return url;
     }
 

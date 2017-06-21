@@ -29,7 +29,7 @@ public class CurrencyExchangeControllerTest2 {
 
     @Test
     public void shouldReturnExchange(){
-        ExchangeModel model = sut.getExchange();
+        ExchangeModel model = sut.getLatestStandardExRates();
         Assert.assertNotNull(model);
     }
 

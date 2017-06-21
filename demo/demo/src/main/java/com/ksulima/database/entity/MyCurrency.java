@@ -28,7 +28,7 @@ public class MyCurrency {
     private String base;
 
     @Column
-    private String waluta;
+    private String currency;
 
     @Column
     private String rate;
@@ -50,12 +50,12 @@ public class MyCurrency {
         this.base = base;
     }
 
-    public String getWaluta() {
-        return waluta;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setWaluta(String waluta) {
-        this.waluta = waluta;
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public String getRate() {
