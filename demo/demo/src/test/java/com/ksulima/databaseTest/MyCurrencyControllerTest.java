@@ -35,7 +35,7 @@ public class MyCurrencyControllerTest {
     public void shouldReturnFirst1ById(){
         MyCurrency myCurrency = new MyCurrency();
         myCurrency.setBase("EUR");
-        myCurrency.setWaluta("PLN");
+        myCurrency.setCurrency("PLN");
         myCurrency.setRate("4.2424");
         when(myCurrencyRepository.findFirst1ByOrderByIdDesc()).thenReturn(myCurrency);
 
