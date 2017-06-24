@@ -22,6 +22,11 @@ public class CurrencyRates implements Serializable {
     private CurrencyDict currencyDict;
 
 
+    public CurrencyRates() {
+        RatesPk ratesPk = new RatesPk();
+        this.setRatesPk(ratesPk);
+    }
+
     public RatesPk getRatesPk() {
         return ratesPk;
     }

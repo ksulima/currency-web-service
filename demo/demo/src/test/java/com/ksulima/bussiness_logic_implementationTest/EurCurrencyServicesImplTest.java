@@ -1,6 +1,6 @@
 package com.ksulima.bussiness_logic_implementationTest;
 
-import com.ksulima.bussiness_logic_implementation.EurCurrencyServiceImpl;
+import com.ksulima.bussiness_logic_implementation.EurBetaServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,11 +12,11 @@ import static org.hamcrest.Matchers.containsString;
  */
 public class EurCurrencyServicesImplTest {
 
-    private EurCurrencyServiceImpl util;
+    private EurBetaServiceImpl util;
 
     @Before
     public void setup(){
-        util = new EurCurrencyServiceImpl();
+        util = new EurBetaServiceImpl();
     }
 
     @Test

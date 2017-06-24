@@ -1,5 +1,6 @@
 package com.ksulima.database;
 
+import com.ksulima.util.NotSavedException;
 import com.ksulima.database.entity.CurrencyDict;
 import com.ksulima.database.entity.CurrencyRates;
 import com.ksulima.database.service.DictAndRatesService;
@@ -31,7 +32,12 @@ public class DictAndRatesController {
 
     @RequestMapping(value = "/rates/add/{baseCode}", method = RequestMethod.PUT)
     public void addRates(@RequestBody CurrencyRates currencyRates, @PathVariable String baseCode){
-        dictAndRatesService.addRatesRecord(currencyRates, baseCode);
+        try{
+            dictAndRatesService.addRatesRecord(currencyRates, baseCode);
+
+        }catch (NotSavedException e){
+            e.printStackTrace();
+        }
     }
 
     @RequestMapping(value = "/dict/all", method = RequestMethod.GET)

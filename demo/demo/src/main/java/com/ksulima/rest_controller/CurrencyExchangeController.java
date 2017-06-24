@@ -2,19 +2,15 @@ package com.ksulima.rest_controller;
 
 import com.ksulima.bussiness_logic_interface.model.CurrencyParams;
 import com.ksulima.bussiness_logic_interface.model.ExchangeModel;
-import com.ksulima.bussiness_logic_interface.service.CurrencyTotService;
-import com.ksulima.database.entity.MyCurrency;
+import com.ksulima.bussiness_logic_interface.service.CurrencyService;
 import com.ksulima.database.repository.MyCurrencyRepository;
+import com.ksulima.database.service.DictAndRatesService;
 import com.ksulima.rest_client.ExchangeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -30,8 +26,12 @@ public class CurrencyExchangeController {
     private ExchangeClient exchangeClient;
     @Autowired
     private MyCurrencyRepository myCurrencyRepository;
+
     @Autowired
-    private CurrencyTotService currencyTotService;
+    DictAndRatesService dictAndRatesService;
+
+    @Autowired
+    private CurrencyService currencyService;
 
     @RequestMapping(value = "/latest", method = RequestMethod.GET)
     public ExchangeModel getLatestStandardExRates() {
@@ -42,26 +42,19 @@ public class CurrencyExchangeController {
     public ExchangeModel getSelectedExRates(@PathVariable String base,
                                             @PathVariable String currency,
                                             @PathVariable String date) {
-        return exchangeClient.getSelectedExRates(base, currency, date);
+
+
+        return currencyService.getSelectedExRates(base, currency, date);
     }
 
-    @RequestMapping(value = "/{base}/{currency}/{startDate}/{endDate}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{base}/{currency}/period/{startDate}/{endDate}", method = RequestMethod.GET)
     public Set<ExchangeModel> getSelectedExRatesFromDefinedPeriod(@PathVariable String base,
                                                                   @PathVariable String currency,
                                                                   @PathVariable String startDate,
                                                                   @PathVariable String endDate){
-        Set<ExchangeModel> result = new HashSet<ExchangeModel>();
-        for (LocalDate date = LocalDate.parse(startDate); date.isBefore(LocalDate.parse(endDate)); date = date.plusDays(1))
-        {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-LL-dd");
-            String formattedString = date.format(formatter);
-            try{
-                result.add(exchangeClient.getSelectedExRates(base, currency, formattedString));
-            }catch(Exception e){
-                throw new RuntimeException("Exchange rate not found for date "+formattedString);
-            }
-        }
-        return result;
+
+        return currencyService.getSelectedExRatesFromDefinedPeriod(base, currency, startDate, endDate);
+
     }
 
     @RequestMapping("/latest/base/{base}/currencies/{currencies}")
@@ -76,45 +69,29 @@ public class CurrencyExchangeController {
         return new ResponseEntity(exchangeClient.getSelectedExRates(currencyParams.getBase(), currencyParams.getCurrency(), currencyParams.getDate()), HttpStatus.OK);
     }
 
-    @RequestMapping("/convert/{base}/{currency}/{amount}/{date}")
-    public ResponseEntity<ExchangeModel> calculateConversion(@PathVariable String base,
-                                                             @PathVariable String currency,
-                                                             @PathVariable Integer amount,
-                                                             @PathVariable String date) {
-        ExchangeModel fixerdata = exchangeClient.getSelectedExRates(base, currency, date);
 
-        if (amount > 0 && amount <= 1000) {
-            ExchangeModel result = currencyTotService.calculateConversion(fixerdata, amount);
-            return new ResponseEntity(result, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(fixerdata, HttpStatus.BAD_REQUEST);
-        }
+
+    // fixer --> currencyarchive
+
+    @RequestMapping(value = "/save/{base}/{currency}/period/{startDate}/{endDate}", method = RequestMethod.POST)
+    public void saveSelectedExRatesFromDefinedPeriod(@PathVariable String base,
+                                                         @PathVariable String currency,
+                                                         @PathVariable String startDate,
+                                                         @PathVariable String endDate){
+
+        currencyService.saveSelectedExRatesFromDefinedPeriod(base, currency, startDate, endDate);
     }
 
-    // fixer --> Database
+    // fixer --> currency_dict, currency_rates
 
-    @RequestMapping(value = "/save/{base}/{currency}/{startDate}/{endDate}", method = RequestMethod.PUT)
-    public String saveSelectedExRatesFromDefinedPeriod(@PathVariable String base,
-                                                   @PathVariable String currency,
-                                                   @PathVariable String startDate,
-                                                   @PathVariable String endDate){
+    @RequestMapping(value = "/save/{base}/{currency}/{date}", method = RequestMethod.POST)
+    public void saveSelectedExRates(@PathVariable String base,
+                                    @PathVariable String currency,
+                                    @PathVariable String date){
 
-        Set<ExchangeModel> data = getSelectedExRatesFromDefinedPeriod(base, currency, startDate, endDate);
-        for(ExchangeModel dataItem: data){
-            List<MyCurrency> DatabaseItems = myCurrencyRepository.findByDateAndBaseAndCurrency(dataItem.getDate(), base, currency);
-            if(DatabaseItems.size() == 0){
-                MyCurrency myCurrency = new MyCurrency();
-                myCurrency.setDate(dataItem.getDate());
-                myCurrency.setBase(dataItem.getBase());
-                myCurrency.setCurrency(currency);
-                myCurrency.setRate(dataItem.getRates().get(currency));
-                myCurrencyRepository.save(myCurrency);
-            }
-        }
-        return "Saving finished";
+         currencyService.saveSelectedExRates(base, currency, date);
+
     }
-
-
 
 
 

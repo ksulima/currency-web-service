@@ -1,5 +1,6 @@
 package com.ksulima.database.service;
 
+import com.ksulima.util.NotSavedException;
 import com.ksulima.database.entity.CurrencyDict;
 import com.ksulima.database.entity.CurrencyRates;
 import com.ksulima.database.repository.CurrencyDictRepository;
@@ -32,10 +33,15 @@ public class DictAndRatesService {
         currDictRepo.save(item);
     }
 
-    public void addRatesRecord(CurrencyRates item, String code){
+    public void addRatesRecord(CurrencyRates item, String code) throws NotSavedException{
         CurrencyDict currencyDict = findDictByCode(code);
         item.setCurrencyDict(currencyDict);
-        currRatesRepo.save(item);
+
+        try{
+            currRatesRepo.save(item);
+        }catch (Exception e){
+            throw new NotSavedException("Item not saved");
+        }
     }
 
     public List<CurrencyDict> findDictAll(){

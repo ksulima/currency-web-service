@@ -1,6 +1,6 @@
 package com.ksulima.bussiness_logic_implementation;
 
-import com.ksulima.bussiness_logic_interface.service.CurrencyService;
+import com.ksulima.bussiness_logic_interface.service.BetaService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class EurCurrencyServiceImpl implements CurrencyService {
+public class EurBetaServiceImpl implements BetaService {
 
     @Override
     public String getCurrency() {
