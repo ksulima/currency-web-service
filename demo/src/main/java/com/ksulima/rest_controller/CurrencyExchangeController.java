@@ -57,7 +57,7 @@ public class CurrencyExchangeController {
 
     }
 
-    @RequestMapping("/latest/base/{base}/currencies/{currencies}")
+    @RequestMapping(value = "/latest/base/{base}/currencies/{currencies}", method = RequestMethod.GET)
     public ExchangeModel getLatestExRatesForCurrencies(@PathVariable String base,
                                                        @PathVariable String currencies) {
         return exchangeClient.getLatestExRatesForCurrencies(base, currencies);

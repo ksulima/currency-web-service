@@ -1,5 +1,8 @@
 package com.ksulima.database.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.GeneratedValue;
@@ -8,6 +11,9 @@ import java.io.Serializable;
 /**
  * Created by Krzysztof Sulima on 16.06.2017.
  */
+
+@Getter
+@Setter
 @Embeddable
 public class RatesPk implements Serializable {
 
@@ -52,27 +58,4 @@ public class RatesPk implements Serializable {
         return result;
     }
 
-    public Long getCurrencyId() {
-        return currencyId;
-    }
-
-    public void setCurrencyId(Long currencyId) {
-        this.currencyId = currencyId;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
 }

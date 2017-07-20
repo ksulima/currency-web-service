@@ -15,15 +15,4 @@ public class CurrencyParams {
     private String currency;
     private String date;
 
-    public String getBase() {
-        return base;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public String getDate() {
-        return date;
-    }
 }

@@ -1,11 +1,16 @@
 package com.ksulima.database.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * Created by Krzysztof Sulima on 15.06.2017.
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "CURRENCY_RATES")
 public class CurrencyRates implements Serializable {
@@ -26,31 +31,6 @@ public class CurrencyRates implements Serializable {
         RatesPk ratesPk = new RatesPk();
         this.setRatesPk(ratesPk);
     }
-
-    public RatesPk getRatesPk() {
-        return ratesPk;
-    }
-
-    public void setRatesPk(RatesPk ratesPk) {
-        this.ratesPk = ratesPk;
-    }
-
-    public String getRate() {
-        return rate;
-    }
-
-    public void setRate(String rate) {
-        this.rate = rate;
-    }
-
-    public CurrencyDict getCurrencyDict() {
-        return currencyDict;
-    }
-
-    public void setCurrencyDict(CurrencyDict currencyDict) {
-        this.currencyDict = currencyDict;
-    }
-
 
 
 }

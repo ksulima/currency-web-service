@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Krzysztof Sulima on 19.03.2017.
@@ -25,11 +27,15 @@ public class ExchangeClient {
     }
 
     public ExchangeModel getSelectedExRates(String base, String currency, String date){
-        return rest.getForObject(urlParamForSelectedCurrency(base, currency, date), ExchangeModel.class);
+        Map<String, String> vars = new HashMap<>();
+        vars.put("base", base);
+        vars.put("currency", currency);
+        vars.put("date", date);
+        return rest.getForObject(urlParamForSelectedCurrencyTemp(), ExchangeModel.class, vars);
     }
 
-    private String urlParamForSelectedCurrency(String base, String currency, String date){
-        return "http://api.fixer.io/"+date+"?symbols="+currency+"&base=" + base;
+    private String urlParamForSelectedCurrencyTemp(){
+        return "http://api.fixer.io/{date}?symbols={currency}&base={base}";
     }
 
     public ExchangeModel getLatestExRatesForCurrencies(String base, String currencies){
@@ -37,7 +43,7 @@ public class ExchangeClient {
     }
 
     private String urlParamForCurrencies(String base, String currencies){
-        List<String> items = Arrays.asList(currencies.split(","));
+        List<String> items = Arrays.asList(currencies.split(";"));
         String url = "http://api.fixer.io/latest?symbols=";
         for(String item : items){
             url += item;
