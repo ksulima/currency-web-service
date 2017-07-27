@@ -1,7 +1,7 @@
 package com.ksulima.rest_controller;
 
+import com.ksulima.bussiness_logic_implementation.ConversionServiceImpl;
 import com.ksulima.bussiness_logic_interface.model.ExchangeModel;
-import com.ksulima.bussiness_logic_interface.service.ConversionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ConversionController {
 
     @Autowired
-    private ConversionService conversionService;
+    private ConversionServiceImpl conversionService;
 
     @RequestMapping("/convert/{base}/{currency}/{amount}/{date}")
     public ResponseEntity<ExchangeModel> calculateConversion(@PathVariable String base,

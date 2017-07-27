@@ -47,8 +47,16 @@ public class CurrencyServiceImpl implements CurrencyService {
         CurrencyCodeValidation.isValid(base);
         CurrencyCodeValidation.isValid(currency);
 
+
+        LocalDate localStartDate = LocalDate.parse(startDate);
+        LocalDate localEndDate = LocalDate.parse(endDate);
+
+        if(localEndDate.isBefore(localStartDate)){
+            throw new IllegalArgumentException("EndDate cannot be before startDate");
+        }
+
         Set<ExchangeModel> result = new HashSet<ExchangeModel>();
-        for (LocalDate date = LocalDate.parse(startDate); date.isBefore(LocalDate.parse(endDate)); date = date.plusDays(1))
+        for (LocalDate date = localStartDate; date.isBefore(localEndDate.plusDays(1)); date = date.plusDays(1))
         {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-LL-dd");
             String formattedString = date.format(formatter);

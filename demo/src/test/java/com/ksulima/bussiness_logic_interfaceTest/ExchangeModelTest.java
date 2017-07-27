@@ -23,6 +23,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @RunWith(DataProviderRunner.class)
 public class ExchangeModelTest {
 
+
     private ExchangeModel model;
 
     @Before

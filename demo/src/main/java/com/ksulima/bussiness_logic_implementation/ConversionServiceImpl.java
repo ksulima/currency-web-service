@@ -23,12 +23,12 @@ public class ConversionServiceImpl implements ConversionService {
     @Override
     public ExchangeModel calculateConversion(String base, String currency, Integer amount, String date) {
 
-        if(amount < 0 || amount > 1000){
+        if(amount < 0 || amount > 1000000){
             return null;
         }
 
-        CurrencyCodeValidation.isValid(base);
-        CurrencyCodeValidation.isValid(currency);
+         CurrencyCodeValidation.isValid(base);
+         CurrencyCodeValidation.isValid(currency);
 
 
         ExchangeModel response = exchangeClient.getSelectedExRates(base, currency, date);

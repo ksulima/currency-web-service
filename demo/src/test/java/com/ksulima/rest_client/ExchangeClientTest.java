@@ -3,18 +3,15 @@ package com.ksulima.rest_client;
 import com.ksulima.bussiness_logic_interface.model.ExchangeModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
-
 /**
  * Created by Krzysztof Sulima on 20.07.2017.
  */
@@ -29,7 +26,8 @@ public class ExchangeClientTest {
     @InjectMocks
     ExchangeClient sut;
 
-    @Mock
+
+    @Mock(answer = Answers.RETURNS_MOCKS)
     RestTemplate rest;
 
     @Test
@@ -49,16 +47,19 @@ public class ExchangeClientTest {
         assertThat(item.getDate(), is(result.getDate()));
     }
 
-    public void getSelectedExRatesTest(){
-        Map<String, String> vars = new HashMap<>();
-        vars.put("base", "varA");
-        vars.put("currency", "varb");
-        vars.put("date", "varC");
+//    @Test
+//    public void getSelectedExRatesTest(){
+//        Map<String, String> vars = new HashMap<>();
+//        vars.put("base", "varA");
+//        vars.put("currency", "varB");
+//        vars.put("date", "varC");
+//
+//        ExchangeModel result = sut.getSelectedExRates("varA", "varB", "varC");
+//        //TODO
+//    }
 
-        ExchangeModel result = sut.getSelectedExRates("varA", "varB", "varC");
 
-        //TODO
 
-    }
+
 
 }

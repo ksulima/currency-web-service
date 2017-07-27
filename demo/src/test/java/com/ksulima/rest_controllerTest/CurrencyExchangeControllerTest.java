@@ -1,62 +1,87 @@
 package com.ksulima.rest_controllerTest;
 
-import com.ksulima.rest_controller.BasicController;
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.ksulima.bussiness_logic_implementation.CurrencyServiceImpl;
+import com.ksulima.bussiness_logic_interface.model.CurrencyParams;
+import com.ksulima.bussiness_logic_interface.model.ExchangeModel;
+import com.ksulima.rest_client.ExchangeClient;
+import com.ksulima.rest_controller.CurrencyExchangeController;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by Krzysztof Sulima on 28.05.2017.
  */
-@RunWith(DataProviderRunner.class)
+
+@RunWith(MockitoJUnitRunner.class)
 public class CurrencyExchangeControllerTest {
 
-    private BasicController controler;
+    @InjectMocks
+    CurrencyExchangeController sut;
 
-    @Before
-    public void setup(){
-        controler = new BasicController();
+
+    @Mock(answer = Answers.RETURNS_MOCKS)
+    private ExchangeClient exchangeClient;
+
+    @Mock(answer = Answers.RETURNS_MOCKS)
+    private CurrencyServiceImpl currencyService;
+
+
+    @Test
+    public void getLatestStandardExRatesShouldReturnExchange(){
+        ExchangeModel model = sut.getLatestStandardExRates();
+        Assert.assertNotNull(model);
     }
 
     @Test
-    @DataProvider({"5,1", "10,2", "0,0"})
-    public void shouldMultiplyGivenNumberByFive(Long exp, Long actual){
-        Assert.assertEquals(exp, controler.multiplyByFive(actual));
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void shouldThrowInvalidCurrencyCode(){
-        controler.currencyMultiplier("mistake", "PLN", 1.0, 1.0);
+    public void getSelectedExRatesShouldReturnExchange(){
+        ExchangeModel model = sut.getSelectedExRates(any(), any(), any());
+        Assert.assertNotNull(model);
+        verify(currencyService, times(1)).getSelectedExRates(any(), any(), any());
     }
 
     @Test
-    @DataProvider({"3.55,2.84,10.082", "9.35,6.24,58.344"})
-    public void shouldProductProperCalculation(Double value, Double ratio, String product){
-        String result = controler.currencyMultiplier("EUR","PLN", value, ratio);
-        List<Object> resultWords = Arrays.asList(result.split(" "));
-        Assert.assertThat(resultWords.get(3), equalTo(product));
+    public void getSelectedExRatesFromDefinedPeriodTest(){
+
+        Set<ExchangeModel> testSet = new HashSet<>();
+        testSet.add(new ExchangeModel());
+        when(currencyService.getSelectedExRatesFromDefinedPeriod(any(), any(), any(), any())).thenReturn(testSet);
+        Set<ExchangeModel> model = sut.getSelectedExRatesFromDefinedPeriod(any(), any(), any(), any());
+
+        verify(currencyService, times(1)).getSelectedExRatesFromDefinedPeriod(any(), any(), any(), any());
+        assertThat(model, is(testSet));
     }
 
     @Test
-    public void shouldReturnNegativeResult(){
-        Long result = controler.multiplyByFive(-4L);
-        Assert.assertEquals(new Long(-20L), result);
+    public void getLatestExRatesForCurrenciesTest(){
+        ExchangeModel model = sut.getLatestExRatesForCurrencies(any(), any());
+        Assert.assertNotNull(model);
+        verify(exchangeClient, times(1)).getLatestExRatesForCurrencies(any(), any());
     }
 
+    @Test
+    public void getSelectedExRatesTest(){
 
-
+        CurrencyParams currParam = new CurrencyParams();
+        ExchangeModel item = new ExchangeModel();
+        when(currencyService.getSelectedExRates(any(), any(), any())).thenReturn(item);
+        ResponseEntity result = sut.getSelectedExRates(currParam);
+        assertThat(HttpStatus.OK, is(result.getStatusCode()));
+    }
 
 
 }
-
-
-
-

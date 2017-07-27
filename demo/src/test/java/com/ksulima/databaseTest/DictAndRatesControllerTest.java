@@ -65,8 +65,23 @@ public class DictAndRatesControllerTest {
 
         when(dictAndRatesService.findDictAll()).thenReturn(dictList);
         List<CurrencyDict> result = sut.findDictAll();
-        assertThat(dictList, is(result));
-        assertThat(dictList, hasSize(5));
+        assertThat(result, is(dictList));
+        assertThat(result, hasSize(5));
+    }
+
+    @Test
+    public void testFindAllDictUsingSpy(){
+        List<CurrencyDict> dictList = new ArrayList<>();
+        List<CurrencyDict> spy = spy(dictList);
+
+        CurrencyDict item = new CurrencyDict();
+        item.setName("itemName");
+        doReturn(item).when(spy).get(0);
+
+        when(dictAndRatesService.findDictAll()).thenReturn(spy);
+        List<CurrencyDict> result = sut.findDictAll();
+        assertThat(result.get(0), is(item));
+        assertThat(result.get(0).getName(), is("itemName"));
     }
 
     @Test

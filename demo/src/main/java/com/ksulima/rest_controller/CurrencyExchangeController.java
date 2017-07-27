@@ -3,8 +3,6 @@ package com.ksulima.rest_controller;
 import com.ksulima.bussiness_logic_interface.model.CurrencyParams;
 import com.ksulima.bussiness_logic_interface.model.ExchangeModel;
 import com.ksulima.bussiness_logic_interface.service.CurrencyService;
-import com.ksulima.database.repository.MyCurrencyRepository;
-import com.ksulima.database.service.DictAndRatesService;
 import com.ksulima.rest_client.ExchangeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,14 +22,10 @@ public class CurrencyExchangeController {
 
     @Autowired
     private ExchangeClient exchangeClient;
-    @Autowired
-    private MyCurrencyRepository myCurrencyRepository;
-
-    @Autowired
-    DictAndRatesService dictAndRatesService;
 
     @Autowired
     private CurrencyService currencyService;
+
 
     @RequestMapping(value = "/latest", method = RequestMethod.GET)
     public ExchangeModel getLatestStandardExRates() {
@@ -66,32 +60,12 @@ public class CurrencyExchangeController {
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     public ResponseEntity<ExchangeModel> getSelectedExRates(@RequestBody CurrencyParams currencyParams) {
-        return new ResponseEntity(exchangeClient.getSelectedExRates(currencyParams.getBase(), currencyParams.getCurrency(), currencyParams.getDate()), HttpStatus.OK);
+        return new ResponseEntity(currencyService.getSelectedExRates(currencyParams.getBase(), currencyParams.getCurrency(), currencyParams.getDate()), HttpStatus.OK);
     }
 
 
 
-    // fixer --> currencyarchive
 
-    @RequestMapping(value = "/save/{base}/{currency}/period/{startDate}/{endDate}", method = RequestMethod.POST)
-    public void saveSelectedExRatesFromDefinedPeriod(@PathVariable String base,
-                                                         @PathVariable String currency,
-                                                         @PathVariable String startDate,
-                                                         @PathVariable String endDate){
-
-        currencyService.saveSelectedExRatesFromDefinedPeriod(base, currency, startDate, endDate);
-    }
-
-    // fixer --> currency_dict, currency_rates
-
-    @RequestMapping(value = "/save/{base}/{currency}/{date}", method = RequestMethod.POST)
-    public void saveSelectedExRates(@PathVariable String base,
-                                    @PathVariable String currency,
-                                    @PathVariable String date){
-
-         currencyService.saveSelectedExRates(base, currency, date);
-
-    }
 
 
 
