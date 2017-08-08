@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -14,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping
+@RequestMapping("/api")
 public class ConversionController {
 
     @Autowired
     private ConversionServiceImpl conversionService;
 
-    @RequestMapping("/convert/{base}/{currency}/{amount}/{date}")
+    @RequestMapping(value = "/convert/{base}/{currency}/{amount}/{date}", method = RequestMethod.GET)
     public ResponseEntity<ExchangeModel> calculateConversion(@PathVariable String base,
                                                              @PathVariable String currency,
                                                              @PathVariable Integer amount,
