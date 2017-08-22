@@ -39,8 +39,28 @@ CREATE TABLE `currency_rates` (
 ;
 
 
-
-
 SHOW ENGINE INNODB STATUS;
 SHOW FULL COLUMNS FROM currency_rates;
 SHOW INDEXES from currency_rates;
+
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(60) NOT NULL UNIQUE,
+  `password_hash` varchar(60) NOT NULL,
+  `role` varchar(12) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8;
+
+
+
+
+
+
+
+
+
+
+
+
+
